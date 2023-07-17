@@ -10,17 +10,21 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.example.demo.repository.modelo.CuentaBancaria;
 import com.example.demo.repository.modelo.Equipo;
 import com.example.demo.repository.modelo.Habitacion;
 import com.example.demo.repository.modelo.Hotel;
 import com.example.demo.repository.modelo.Jugador;
+import com.example.demo.repository.modelo.Propietario;
+import com.example.demo.repository.modelo.Transferencia;
+import com.example.demo.service.CuentaBancariaService;
 import com.example.demo.service.EquipoService;
 
 @SpringBootApplication
 public class Pa2U3P4AtLvApplication implements CommandLineRunner {
 	
 	@Autowired
-	private EquipoService equipoService;
+	private CuentaBancariaService bancariaService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Pa2U3P4AtLvApplication.class, args);
@@ -29,92 +33,45 @@ public class Pa2U3P4AtLvApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
+		Propietario propietario= new Propietario();
+		propietario.setNombre("Luis");
+		propietario.setApellido("Valladares");
+		propietario.setCedula("1723973796");
+		
+		Propietario propietario2= new Propietario();
+		propietario2.setNombre("Luissss");
+		propietario2.setApellido("Valladaresssssss");
+		propietario2.setCedula("1723973796");
+		
+		CuentaBancaria bancaria = new CuentaBancaria();
+		bancaria.setNumero("00001");
+		bancaria.setSaldo(new BigDecimal(5000));
+		bancaria.setTipo("Ahorro");
+		bancaria.setPropietario(propietario);
+		this.bancariaService.guardarCuenta(bancaria);
+		System.out.println("guardo cuenta1");
+		
+		CuentaBancaria bancaria2 = new CuentaBancaria();
+		bancaria2.setNumero("00002");
+		bancaria2.setSaldo(new BigDecimal(5000));
+		bancaria2.setTipo("Ahorro");
+		bancaria2.setPropietario(propietario2);
+		this.bancariaService.guardarCuenta(bancaria2);
+		System.out.println("guardo cuenta2");
+		
+		System.out.println("creo transferencia");
+		this.bancariaService.crearTransferencia(bancaria, bancaria2, new BigDecimal(50));
 		
 		
-		
-		System.out.println(">>>>>>>>>>OUTER INNER JOIN");
-		List<Equipo> listaEquipos5 = this.equipoService.buscarInnerJoin();
-		for ( Equipo e :listaEquipos5 ) {
-			System.out.println(e);
-		}
-		
-		System.out.println(">>>>>>>>>>OUTER INNER JOIN 2");
-		List<Jugador> listaJugadores5 = this.equipoService.buscarJugadoresInnerJoin();
-		for ( Jugador ju :listaJugadores5 ) {
-			System.out.println(ju);
-		}
-		
-		System.out.println(">>>>>>>>>>OUTER RIGTH JOIN");
-		List<Equipo> listaEquipos = this.equipoService.buscarOuterRigthJoin();
-		for ( Equipo e :listaEquipos ) {
-			System.out.println(e);
-		}
-		
-		System.out.println(">>>>>>>>>>OUTER RIGTH JOIN 2");
-		List<Jugador> listaJugadores = this.equipoService.buscarJugadoresOuterRigthJoin();
-		for ( Jugador ju :listaJugadores ) {
-			System.out.println(ju);
-		}
-		
-		System.out.println(">>>>>>>>>>OUTER LEFT JOIN");
-		List<Equipo> listaEquipos2 = this.equipoService.buscarOuterLeftJoin();
-		for ( Equipo e :listaEquipos2 ) {
-			System.out.println(e);
-		}
-		
-		System.out.println(">>>>>>>>>>OUTER LEFT JOIN 2");
-		List<Jugador> listaJugadores2 = this.equipoService.buscarJugadoresOuterLeftJoin();
-		for ( Jugador ju :listaJugadores2 ) {
-			System.out.println(ju);
-		}
-		
-		
-		System.out.println(">>>>>>>>>>OUTER full JOIN");
-		List<Equipo> listaEquipos3 = this.equipoService.buscarOuterFullJoin();
-		for ( Equipo e :listaEquipos3 ) {
-			System.out.println(e);
-		}
-		
-		System.out.println(">>>>>>>>>>OUTER full JOIN 2");
-		List<Jugador> listaJugadores3 = this.equipoService.buscarJugadoresOuterFullJoin();
-		for ( Jugador ju :listaJugadores3 ) {
-			System.out.println(ju);
-		}
-		
-		System.out.println(">>>>>>>>>>WHERE JOIN");
-		List<Equipo> listaEquipos4 = this.equipoService.buscarWhereJoin();
-		for ( Equipo e :listaEquipos4 ) {
-			System.out.println(e);
-		}
-		
-		System.out.println(">>>>>>>>>>WHERE JOIN 2");
-		List<Jugador> listaJugadores4 = this.equipoService.buscarJugadoresWhereJoin();
-		for ( Jugador ju :listaJugadores4 ) {
-			System.out.println(ju);
-		}
-		
-		System.out.println(">>>>>>>>>>Join Fetch");
-		List<Equipo> listaEquipo6 = this.equipoService.buscarFetchJoin();
-		for ( Equipo e : listaEquipo6) {
-			System.out.println(e.getNombre());
-			System.out.println("FETCH Tiene los siguientes jugadores:");
-			for(Jugador ju: e.getJugadores()) {
-				System.out.println(ju.getNombre());
+		System.out.println("SQL Join Fetch");
+		List<CuentaBancaria> listaHotelf = this.bancariaService.seleccionarTrasnferencias();
+		for ( CuentaBancaria h : listaHotelf) {
+			System.out.println(h.getPropietario().getNombre());
+			System.out.println("tiene los siguientes transferencias");
+			for(Transferencia t : h.getTransferenciasDestino()) {
+				System.out.println(t.getMonto());
 			}
 		}
-		
-		System.out.println(">>>>>>>>>>Join Fetch 2");
-		List<Equipo> listaEquipo7 = this.equipoService.buscarJugadoresFetchJoin();
-		for ( Equipo e : listaEquipo7) {
-			System.out.println(e.getNombre());
-			System.out.println("tiene jugadores que su salario es mayor a 1000");
-			for(Jugador ju: e.getJugadores()) {
-				System.out.println(ju.getNombre());
-			}
-		}
-		
-	
-		
 		
 		
 	}
