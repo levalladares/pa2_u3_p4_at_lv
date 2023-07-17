@@ -23,9 +23,13 @@ public class HotelRepositoryImp implements HotelRepository {
 	public List<Hotel> seleccionarInnerJoin() {
 		// select * from hotel h join habitacion ha on h.htl_id = ha.habi_id_hotel
 		// SELECT h from Hotel h JOIN h.habitaciones ha 
-		String jpql ="SELECT h FROM Hotel h JOIN h.habitaciones ha";
+		String jpql ="SELECT h FROM Hotel h INNER JOIN h.habitaciones ha";
 
         TypedQuery <Hotel> myQuery  = this.entityManager.createQuery(jpql,Hotel.class);
+        List <Hotel> listaHoteles = myQuery.getResultList();
+        for(Hotel h : listaHoteles) {
+        	h.getHabitaciones().size();
+        }
         return myQuery.getResultList();
 	}
 
@@ -67,6 +71,20 @@ public class HotelRepositoryImp implements HotelRepository {
 		return myQuery.getResultList();
 	}
 
-	
+	@Override
+	public List<Hotel> seleccionarFetchJoin() {
+		//>>>>>>>>>>>>>>>>>>>>AQUI <FETCH> ES DESPUES DEL JOIN NO ANTES<<<<<<<<<<<<<<<<<<<<<<<<<<<
+		String jpql ="SELECT h FROM Hotel h JOIN FETCH h.habitaciones ha";
+        TypedQuery <Hotel> myQuery  = this.entityManager.createQuery(jpql,Hotel.class);
+        return myQuery.getResultList();
+        
+	}
+
+	@Override
+	public void insertar(Hotel hotel) {
+		// TODO Auto-generated method stub
+		this.entityManager.persist(hotel);
+	}
+
 
 }

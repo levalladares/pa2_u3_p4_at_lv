@@ -12,4 +12,6 @@ public interface HotelRepository {
 	public List<Habitacion> seleccionarHabitacionesOuterLeftJoin();
 	public List<Hotel> seleccionarOuterFullJoin();
 	public List<Hotel> seleccionarWhereJoin();
+	public List<Hotel> seleccionarFetchJoin();
+	public void insertar (Hotel hotel);
 }
