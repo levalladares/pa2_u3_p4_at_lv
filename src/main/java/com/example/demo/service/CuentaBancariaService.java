@@ -10,5 +10,5 @@ public interface CuentaBancariaService {
 	public void guardarCuenta (CuentaBancaria ctaBancaria );
 	public void crearTransferencia (CuentaBancaria ctaOrigen, CuentaBancaria ctaDestino, BigDecimal monto);
 	public List<CuentaBancaria> seleccionarTrasnferencias(); 
-
+	public void prueba();
 }

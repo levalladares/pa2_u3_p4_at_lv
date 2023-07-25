@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.example.demo.repository.modelo.CuentaBancaria;
 import com.example.demo.repository.modelo.Hotel;
@@ -15,6 +16,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
 
 @Repository
 @Transactional
@@ -27,6 +29,7 @@ public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
 	public void agregarCuenta(CuentaBancaria ctaBancaria) {
 		// TODO Auto-generated method stub
 		this.entityManager.persist(ctaBancaria);
+		System.out.println(TransactionSynchronizationManager.isActualTransactionActive());
 		
 	}
 
@@ -34,6 +37,7 @@ public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
 	public void agregarTransferencia(Transferencia transferencia) {
 		// TODO Auto-generated method stub
 		this.entityManager.persist(transferencia);
+		System.out.println(TransactionSynchronizationManager.isActualTransactionActive());
 	}
 	
 	@Override
@@ -41,7 +45,8 @@ public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
 		//>>>>>>>>>>>>>>>>>>>>AQUI <FETCH> ES DESPUES DEL JOIN NO ANTES<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		String jpql ="SELECT h FROM CuentaBancaria h INNER JOIN h.transferencias ha";
         TypedQuery <CuentaBancaria> myQuery  = this.entityManager.createQuery(jpql,CuentaBancaria.class);
-        return myQuery.getResultList();
+        System.out.println(TransactionSynchronizationManager.isActualTransactionActive());
+        return myQuery.getResultList();   
         
 	}
 
