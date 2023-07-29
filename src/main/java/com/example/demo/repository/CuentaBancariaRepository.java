@@ -10,4 +10,5 @@ public interface CuentaBancariaRepository {
 	public void agregarCuenta (CuentaBancaria ctaBancaria );
 	public void agregarTransferencia (Transferencia transferencia);
 	public List<CuentaBancaria> seleccionarTrasnferencias();
+	public void actualizarCuenta(CuentaBancaria ctaBancaria);
 }

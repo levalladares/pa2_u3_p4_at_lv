@@ -18,8 +18,7 @@ public class Pa2U3P4AtLvApplication implements CommandLineRunner {
 	@Autowired
 	private CuentaBancariaService bancariaService;
 	
-	@Autowired
-	private PruebaService pruebaService;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Pa2U3P4AtLvApplication.class, args);
 	}
@@ -27,12 +26,19 @@ public class Pa2U3P4AtLvApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
+		CuentaBancaria CUE2 = new CuentaBancaria();
+		CUE2.setSaldo(new BigDecimal(500000));
+		CUE2.setNumero("008");
+		CUE2.setTipo("Ahorros");
+		this.bancariaService.guardarCuenta(CUE2);
+		
 		CuentaBancaria CUE = new CuentaBancaria();
 		CUE.setSaldo(new BigDecimal(5000));
-		CUE.setNumero("001");
+		CUE.setNumero("009");
 		CUE.setTipo("Ahorros");
-		System.out.println("main: "+TransactionSynchronizationManager.isActualTransactionActive());
 		this.bancariaService.guardarCuenta(CUE);
+		
+		this.bancariaService.crearTransferencia(CUE2, CUE, new BigDecimal(10));;
 		
 	}
 }

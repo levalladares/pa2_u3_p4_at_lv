@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -25,17 +27,11 @@ public class CuentaBancariaServiceImpl implements CuentaBancariaService {
 	@Transactional
 	public void guardarCuenta(CuentaBancaria ctaBancaria) {
 		// TODO Auto-generated method stub
-		//this.bancariaRepository.agregarCuenta(ctaBancaria);
-		System.out.println("service: "+TransactionSynchronizationManager.isActualTransactionActive());
-//		this.pruebaService.prueba();
-//		this.pruebaService.prueba2();
-//		this.pruebaService.pruebaSupports();
-//		this.pruebaService.pruebaNotSupports();
-//		this.pruebaService.pruebaRequired();
-		this.pruebaService.pruebaRequiresNew();
+		this.bancariaRepository.agregarCuenta(ctaBancaria);
 	}
 
 	@Override
+	@Transactional(value = TxType.REQUIRED)
 	public void crearTransferencia(CuentaBancaria ctaOrigen, CuentaBancaria ctaDestino, BigDecimal monto) {
 		// TODO Auto-generated method stub
 		Transferencia trans = new Transferencia();
@@ -43,15 +39,18 @@ public class CuentaBancariaServiceImpl implements CuentaBancariaService {
 		trans.setCtaDestino(ctaDestino);
 		trans.setFecha(LocalDate.now());
 		trans.setMonto(monto);
-		if(trans.getMonto().compareTo(ctaOrigen.getSaldo())==-1) {
+		if(trans.getMonto().compareTo(ctaOrigen.getSaldo())==1) {
 			System.out.println("EL SALDO ES INSUFICIENTE");
 			
 		}else {
-			ctaOrigen.getSaldo().subtract(monto);
-			ctaDestino.getSaldo().add(monto);
+			ctaOrigen.setSaldo(ctaOrigen.getSaldo().subtract(monto));
+			ctaDestino.setSaldo(ctaDestino.getSaldo().add(monto));
+			this.bancariaRepository.actualizarCuenta(ctaDestino);
+			this.bancariaRepository.actualizarCuenta(ctaOrigen);
 		}
 		System.out.println(TransactionSynchronizationManager.isActualTransactionActive());
-		this.bancariaRepository.agregarTransferencia(trans);	
+		this.bancariaRepository.agregarTransferencia(trans);
+		throw new RuntimeException();
 	}
 
 	@Override

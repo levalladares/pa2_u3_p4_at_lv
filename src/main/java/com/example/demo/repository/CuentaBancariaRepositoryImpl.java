@@ -28,16 +28,15 @@ public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
 	@Override
 	public void agregarCuenta(CuentaBancaria ctaBancaria) {
 		// TODO Auto-generated method stub
-		this.entityManager.persist(ctaBancaria);
-		System.out.println(TransactionSynchronizationManager.isActualTransactionActive());
-		
+		this.entityManager.persist(ctaBancaria);		
 	}
 
 	@Override
+	@Transactional(value = TxType.REQUIRED)
 	public void agregarTransferencia(Transferencia transferencia) {
 		// TODO Auto-generated method stub
 		this.entityManager.persist(transferencia);
-		System.out.println(TransactionSynchronizationManager.isActualTransactionActive());
+		throw new RuntimeException();
 	}
 	
 	@Override
@@ -48,6 +47,13 @@ public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
         System.out.println(TransactionSynchronizationManager.isActualTransactionActive());
         return myQuery.getResultList();   
         
+	}
+	
+	@Override
+	@Transactional(value = TxType.REQUIRED)
+	public void actualizarCuenta(CuentaBancaria ctaBancaria) {
+		// TODO Auto-generated method stub
+		this.entityManager.merge(ctaBancaria);		
 	}
 
 }
