@@ -93,7 +93,9 @@ public class Main {
 			return valorFinal;
 		};
 		LOG.info("FUNCTION lambda2:"+function2.aplicar(10) );
-		
+		//metodos referenciados
+		IPersonaFunction<Integer, String >  function3 = metodos::aplicar;
+		LOG.info("predicate metodoReferenciado:"+function3.aplicar("Ahorros") );
 		
 		
 		//5.-UnaryOperator
@@ -102,6 +104,11 @@ public class Main {
 		//CON EL FUNCTION
 		IPersonaUnaryFunction<Integer> unary2=numero -> numero+(numero*2);
 		LOG.info("UNARY lambda2:"+unary2.aplicar(3) );
+		//metodos referenciados 
+		IPersonaUnary<Integer>  unary3 = metodos:: aplicar;
+		LOG.info("UNARI METODOS REFERENCIADOS:"+ unary3.aplicar(5));
+		
 	}
+
 
 }

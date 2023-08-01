@@ -20,4 +20,16 @@ public class MetodosReferenciados {
 			return false;
 		}
 	}
+	public Integer aplicar(String arg) {
+		if(arg.compareTo("Ahorros")==0) {
+			return 1;
+		}else {
+			return 0;
+		} 
+	}
+	public Integer aplicar(Integer arg) {
+		Integer nuevo;
+		nuevo=arg+100;
+		return nuevo;
+	}
 }
