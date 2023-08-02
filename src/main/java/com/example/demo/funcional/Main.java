@@ -1,5 +1,9 @@
 package com.example.demo.funcional;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +32,7 @@ public class Main {
 		LOG.info("Supplier lambda 2:"+supplier3.getId() );
 		//METODOS REFERENCIADOS
 		MetodosReferenciados metodos= new MetodosReferenciados();
-		IPersonaSupplier<Integer> supplier4=metodos::getId;  //--> dos puntos se conoce como metodos referenciados
+		IPersonaSupplier<Integer> supplier4=MetodosReferenciados::getId;  //--> dos puntos se conoce como metodos referenciados
 		LOG.info("Supplier metodoReferenciado:"+supplier4.getId() );
 		
 		
@@ -48,7 +52,7 @@ public class Main {
 		LOG.info("Consumer LABMDA:" );
 		consumer2.accept("Luis Valladares2");
 		//metodos referenciados
-		IPersonaConsumer<String> consumer3 = metodos::acceptar;
+		IPersonaConsumer<String> consumer3 = MetodosReferenciados::acceptar;
 		LOG.info("Consumer metodos referenciados:" );
 		consumer3.accept("A");
 		
@@ -108,6 +112,65 @@ public class Main {
 		IPersonaUnary<Integer>  unary3 = metodos:: aplicar;
 		LOG.info("UNARI METODOS REFERENCIADOS:"+ unary3.aplicar(5));
 		
+		
+		
+		//>>>>>>>>>>>>>>>>>>>>METODOS HIGH ORDER<<<<<<<<<<<<<<<<<
+		
+		//SUPPLIER
+		MetodosHighOrder highOrder = new MetodosHighOrder();
+		//1. Clase
+		IPersonaSupplier<String> supplierHO= new PersonaSupplierImpl();
+		highOrder.metodo(supplierHO);
+		//2. Lambdas
+		MetodosHighOrder.metodo( () ->  "17239737966HO");
+		//3. Metodos Referenciados
+		MetodosHighOrder.metodo(MetodosReferenciados::getIdHO);
+		
+		
+		
+		//CONSUMER
+		//1.clase
+		MetodosHighOrder.metodo2(new PersonaConsumerImpl(), "clase consumer");
+		//2.Lambdas
+		MetodosHighOrder.metodo2(cadena->{
+			LOG.info("HOLA");
+			LOG.info(cadena);
+			LOG.info("CHAO Ho");
+			}, "Consumer LABMDA:");
+		//3.metodos referenciados
+		MetodosHighOrder.metodo2(MetodosReferenciados::acceptar,"hola");
+	
+		
+		
+		
+		// >> INTERFACES FUNCIONALES JAVA
+		//1.Supplier
+		Stream<String> lista=Stream.generate(() ->  "17239737966").limit(10);
+		lista.forEach(cadena-> LOG.info(cadena));
+		
+		//2.Consumer
+		List<Integer> listaNumeros = Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13);
+		listaNumeros.forEach(cadena->LOG.info(""+cadena));
+		
+		//3.Predicate
+		Stream<Integer> listaFinal=listaNumeros.stream().filter(numero -> numero>=5);
+		listaFinal.forEach(numero -> LOG.info("Valor: "+numero));
+		
+		//4.Function
+		Stream <String>listaCambiada=listaNumeros.stream().map(numero -> {
+			Integer num=10;
+			num=numero+num;
+			return "N:"+num;
+		});
+		listaCambiada.forEach(cadena -> LOG.info(cadena));
+		
+		//5.UnaryOperator
+		Stream <Integer>listaCambiada2=listaNumeros.stream().map(numero -> {
+			Integer num=10;
+			num=numero+num;
+			return num;
+		});
+		listaCambiada2.forEach(cadena -> LOG.info(cadena.toString()));
 	}
 
 

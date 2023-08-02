@@ -6,10 +6,14 @@ import org.slf4j.LoggerFactory;
 public class MetodosReferenciados {
 	private static final Logger LOG= LoggerFactory.getLogger(MetodosReferenciados.class);
 
-	public Integer getId(){
+	public static Integer getId(){
 		return 8;
 	}
-	public void acceptar(String arg) {
+	public static String getIdHO(){
+		LOG.info("Metodos Referenciados y HO");
+		return "Luis Valladares";
+	}
+	public static void acceptar(String arg) {
 		String cadena="Luisssssssssssssssss";
 		LOG.info(cadena+" "+arg);
 	}
