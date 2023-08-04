@@ -17,21 +17,21 @@ public class MetodosReferenciados {
 		String cadena="Luisssssssssssssssss";
 		LOG.info(cadena+" "+arg);
 	}
-	public boolean evaluar(String arg) {
+	public static boolean evaluar(String arg) {
 		if(arg.compareTo("Luis")==0) {
 			return true;
 		}else {
 			return false;
 		}
 	}
-	public Integer aplicar(String arg) {
+	public static Integer aplicar(String arg) {
 		if(arg.compareTo("Ahorros")==0) {
 			return 1;
 		}else {
 			return 0;
 		} 
 	}
-	public Integer aplicar(Integer arg) {
+	public static Integer aplicar(Integer arg) {
 		Integer nuevo;
 		nuevo=arg+100;
 		return nuevo;

@@ -14,25 +14,43 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		//>>>>>>>>>>>>>>>>DEBER<<<<<<<<<<<<<<<<<<<
-		//1.Supplier
-		Stream<String> listaA=Stream.generate(MetodosReferenciados::A).limit(5);
-		listaA.forEach(cadena-> LOG.info(cadena));
-		//2.Consumer
-		List<String> listaB= Arrays.asList("Jose","Andrea","Flavio","Jose","Csrlos");
-		listaB.forEach(MetodosReferenciados::B);
-		//3.Predicate
-		List<String> listaC= Arrays.asList("Luis ernesto Valladares bastidas".split(" "));
-		listaC.forEach(MetodosReferenciados::C);
-		//4. Function
-		listaC.forEach(MetodosReferenciados::D);
-		//5.UnaryOperator
-		List<Integer>listaD=Arrays.asList(1,2,3,4,5,6,7,8,9,10);
-		listaD.forEach(MetodosReferenciados::E);
-
+		//PREDICATE
+		//1.clase
+		MetodosHighOrder.metodo3(new PersonaPredicateImpl(),"Luis");
+		//2.Lambdas
+		MetodosHighOrder.metodo3(cadena -> {
+			char primerCaracter = cadena.charAt(0);
+			if(Character.isUpperCase(primerCaracter)) {
+				LOG.info(cadena);
+				return true;
+			}
+			return false;
+		},"Luis");
+		//3. metodos referenciados
+		MetodosHighOrder.metodo3(MetodosReferenciados::evaluar,"Luis");
+		
+		//FUNCTION
+		//1.Clase
+		MetodosHighOrder.metodo4(new PersonaFunctionImp(),"Ahorros");
+		//2.Lambdas
+		MetodosHighOrder.metodo4(cadena -> {if(cadena.compareTo("Ahorros")==0) {
+			return 1;
+		}else {
+			return 0;
+		} 
+			
+		},"Ahorros");
+		//3. metodos referenciados
+		MetodosHighOrder.metodo4(MetodosReferenciados::aplicar, "Ahorros");;
 		
 		
-	
+		//Unary Operator
+		//1. clases
+		MetodosHighOrder.metodo5(new PersonaUnaryImpl(), 50);
+		//2.Lambda
+		MetodosHighOrder.metodo5(numero -> numero+100, 50);
+		//3. metodos referenciados
+		MetodosHighOrder.metodo5(MetodosReferenciados::aplicar,50);
 	}
 
 
