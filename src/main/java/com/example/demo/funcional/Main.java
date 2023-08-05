@@ -51,7 +51,6 @@ public class Main {
 		MetodosHighOrder.metodo5(numero -> numero+100, 50);
 		//3. metodos referenciados
 		MetodosHighOrder.metodo5(MetodosReferenciados::aplicar,50);
+	
 	}
-
-
 }
