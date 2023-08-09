@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import javax.management.RuntimeErrorException;
@@ -10,6 +11,7 @@ import javax.management.RuntimeErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -94,6 +96,37 @@ public class CuentaBancariaServiceImpl implements CuentaBancariaService {
 		System.out.println(TransactionSynchronizationManager.isActualTransactionActive());
 		System.out.println("metodo de prueba");
 		
+	}
+
+	@Override
+	@Async
+	public void agregarAsincrono(CuentaBancaria ctaBancaria) {
+		LOG.info("hilo service: "+ Thread.currentThread().getName()); //<< indica el nombre del hilo con el que se ejecuta el programa
+		//sumar, restar, multiplicar: logica que demora 1 segundo
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.bancariaRepository.agregarCuenta(ctaBancaria);
+		
+		
+	}
+
+	@Override
+	@Async
+	public CompletableFuture<String> agregarAsincrono2(CuentaBancaria ctaBancaria) {
+		LOG.info("hilo service: "+ Thread.currentThread().getName()); //<< indica el nombre del hilo con el que se ejecuta el programa
+		//sumar, restar, multiplicar: logica que demora 1 segundo
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.bancariaRepository.agregarCuenta(ctaBancaria);
+		return CompletableFuture.completedFuture(ctaBancaria.getNumero());
 	}
 
 
